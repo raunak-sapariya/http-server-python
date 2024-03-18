@@ -8,7 +8,7 @@ def main():
     print("----------------------------------------")
 
     server_socket = socket.create_server(("localhost", 4221))
-    server_socket.accept()
+    
     try:
         while True:
             client_con,add=server_socket.accept()
