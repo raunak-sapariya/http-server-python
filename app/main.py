@@ -1,34 +1,40 @@
 import socket
 
 
+def Request(data):
+    data_str = data.decode()
+    split_lines = data_str.split("\r\n")
+    method, path, version = split_lines[0].split()
+    return method, path, version
 
 
 def main():
-    
-    print("----------------------------------------")
+    server_socket = socket.create_server(("0.0.0.0", 4221))
+    while True:
+        client_con, add = server_socket.accept()
 
-    server_socket = socket.create_server(("localhost", 4221))
-    
-    try:
-        while True:
-            client_con,add=server_socket.accept()
-            print(f'Connected to {add}')
-            response=b"HTTP/1.1 200 OK\r\n\r\n"
-            client_con.sendall(response)
+        with client_con:
+            print("Client_Connection_Detail  -->", client_con)
+            print("Client_Address_Detail -->", add)
+            print(f'Connected by {add}')
 
-    except ConnectionError:
-        print(ConnectionError)
-    finally :
-        print("closing")
-        server_socket.close()
+            data = client_con.recv(1024)
+            print("Data -->", data)
 
 
+            response = b"HTTP/1.1 200 OK\r\n\r\n"
+            client_con.send(response)
 
+            method, path, version = Request(data)
+            if path == "/":
+                response = b"HTTP/1.1 200 OK\r\n\r\n"
+                
+            else:
+                response = b"HTTP/1.1 404 Not Found\r\n\r\n"
+            client_con.send(response)
 
-   
+    server_socket.close()
 
-    print("TCP CONNECTION")
-    # con.close()
 
 if __name__ == "__main__":
     main()
