@@ -27,11 +27,11 @@ def main():
 
             method, path, version = Request(data)
             if path == "/":
-                response = b"HTTP/1.1 200 OK\r\n\r\n"
+                response1 = b"HTTP/1.1 200 OK\r\n\r\n"
                 
             else:
-                response = b"HTTP/1.1 404 Not Found\r\n\r\n"
-            client_con.send(response)
+                response1 = b"HTTP/1.1 404 Not Found\r\n\r\n"
+            client_con.send(response1)
 
     server_socket.close()
 
