@@ -16,6 +16,10 @@ def main():
             data = client_conn.recv(1024)
             print(data)
 
+
+            response = b"HTTP/1.1 200 OK\r\n\r\n"
+            client_conn.send(response)
+
             req = Request(data)
             print(req)
             if req[1] == "/":
