@@ -30,6 +30,7 @@ def main():
                 
             else:
                 response1 = b"HTTP/1.1 404 Not Found\r\n\r\n"
+            print(response1)    
             client_con.sendall(response1)
 
     server_socket.close()
