@@ -21,16 +21,19 @@ def main():
             data = client_con.recv(1024)
             print("Data -->", data)
 
+
+            
+
             method, path, version = Request(data)
             if path == "/":
-                response1 = b"HTTP/1.1 200 OK\r\n\r\n"
+                response= b"HTTP/1.1 200 OK\r\n\r\n"
                 
             else:
-                response1 = b"HTTP/1.1 404 Not Found\r\n\r\n"
-            client_con.send(response1)
+                response = b"HTTP/1.1 404 Not Found\r\n\r\n"
+            client_con.send(response)
 
     server_socket.close()
 
 
 if __name__ == "__main__":
-    main()
+     main()
