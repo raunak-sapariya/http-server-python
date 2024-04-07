@@ -19,9 +19,9 @@ def main():
             req = Request(data)
             print(req)
             if req[1] == "/":
-                client_conn.send("HTTP/1.1 200 OK\r\n\r\nHello, World!")
+                client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
             else:
-                client_conn.send("HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
+                client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
             
 
 if __name__ == "__main__":
