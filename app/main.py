@@ -22,7 +22,7 @@ def main():
                 response = "HTTP/1.1 200 OK\r\n\r\nHello, World!"
             else:
                 response = "HTTP/1.1 404 Not Found\r\n\r\nPage Not Found"
-        client_conn.send(response.encode())
+            client_conn.send(response.encode())
 
 if __name__ == "__main__":
     main()
