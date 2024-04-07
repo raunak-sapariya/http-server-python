@@ -22,8 +22,7 @@ def main():
             print("Data -->", data)
 
 
-            response = b"HTTP/1.1 200 OK\r\n\r\n"
-            client_con.send(response)
+           
 
             method, path, version = Request(data)
             if path == "/":
