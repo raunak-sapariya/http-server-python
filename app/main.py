@@ -37,4 +37,4 @@ def main():
 
 
 if __name__ == "__main__":
-   zz main()
+   main()
