@@ -1,0 +1,1 @@
+app.use("/api/syllabus",syllabusRouter)

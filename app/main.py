@@ -19,6 +19,7 @@ def main():
 
             if req[1] == "/":
                 client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
+
             elif req[1].startswith("/echo/"):
                 content= req[1][6:]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
@@ -27,7 +28,7 @@ def main():
                             "",
                             content,
                 ])
-                client_conn.send(response.encode())
+                client_conn.send(response)
             
             else:
                 client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
