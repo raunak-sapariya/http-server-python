@@ -40,7 +40,7 @@ def main():
                 client_conn.send(response)
 
 
-            elif req[1].startswith("/echo/"):
+            elif req[1].startswith("/echo/") and len(req[1]) > 6:
                 content= req[1][6:]
                 accept_encoding=req[3]["Accept-Encoding"]
                 host=req[3]["Host"]
