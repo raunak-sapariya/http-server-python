@@ -3,7 +3,6 @@ import socket
 def Request(data):
     data_str = data.decode()
     lines = data_str.split("\r\n")
-    print("+++++++++++++++++++++++++++++++++++++++",l)
     method, path, version = lines[0].split()
     return method, path,version
 
