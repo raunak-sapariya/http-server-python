@@ -28,46 +28,46 @@ def main():
 
             if req[1] == "/":
                 #client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
-                response = b"\r\n".join(["HTTP/1.1 200 OK",
+                response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
                             "",
                             "HELLO WORLD!",
-                ])
+                ]).encode() 
                 client_conn.send(response)
 
 
             elif req[1].startswith("/echo/"):
                 content= req[1][6:]
-                response = b"\r\n".join(["HTTP/1.1 200 OK",
+                response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
                             "",
                             content,
-                ])
+                ]).encode() 
                 client_conn.send(response)
             
             elif "User-Agent" in req[3]:
                 user_agent=req[3]["User-Agent"]
                 accept_encodeing=req[3]["Accept-Encoding"]
-                response = b"\r\n".join(["HTTP/1.1 200 OK",
+                response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Accept-Encoding: {accept_encodeing}"
                             f"Content-Length: {len(user_agent)}",
                             "",
                             user_agent,
-                ])
+                ]).encode() 
                 client_conn.send(response)
 
 
             else:
                 #client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
-                response = b"\r\n".join(["HTTP/1.1 404 Not Found",
+                response = "\r\n".join(["HTTP/1.1 404 Not Found",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
                             "",
                             "Page Not Found",
-                ])
+                ]).encode() 
                 client_conn.send(response)
 
 
