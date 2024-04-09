@@ -3,9 +3,9 @@ import socket
 def Request(data):
     data_str = data.decode()
     lines = data_str.split("\r\n")
-    print("+++++++++++++++++++++++++++++++++++++++",lines)
+    print("+++++++++++++++++++++++++++++++++++++++",l)
     method, path, version,user_agent = lines[0].split()
-    return method, path, version
+    return method, path, version,user_agent
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
