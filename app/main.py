@@ -10,7 +10,7 @@ def Request(data):
             key,value=line.split(": ")
             header[key]=value
 
-    return method, path,version,header
+    return method, path,version,header,lines
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
@@ -29,7 +29,7 @@ def main():
             if req[1] == "/":
                 accept_encoding=req[3]["Accept-Encoding"]
                 host=req[3]["Host"]
-                response = "\r\n".join(["HTTP/1.1 200 OK",
+                response = "\r\n".join([f"{req[3][0]}",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
                             f"Host: {host}",
