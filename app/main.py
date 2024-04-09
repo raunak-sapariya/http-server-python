@@ -10,7 +10,7 @@ def Request(data):
             key,value=line.split(": ")
             header[key]=value
 
-    return method, path,version,header,lines
+    return method, path, version, header, lines
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
@@ -27,8 +27,8 @@ def main():
            
 
             if req[1] == "/":
-                accept_encoding=req[3]["Accept-Encoding"]
-                host=req[3]["Host"]
+                accept_encoding = req[3]["Accept-Encoding"]
+                host = req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
@@ -39,11 +39,10 @@ def main():
                 ]).encode() 
                 client_conn.send(response)
 
-
             elif req[1].startswith("/echo/"):
-                content= req[1][6:]
-                accept_encoding=req[3]["Accept-Encoding"]
-                host=req[3]["Host"]
+                content = req[1][6:]
+                accept_encoding = req[3]["Accept-Encoding"]
+                host = req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
@@ -54,11 +53,10 @@ def main():
                 ]).encode() 
                 client_conn.send(response)
             
-
             elif "User-Agent" in req[3]:
-                user_agent=req[3]["User-Agent"]
-                accept_encoding=req[3]["Accept-Encoding"]
-                host=req[3]["Host"]
+                user_agent = req[3]["User-Agent"]
+                accept_encoding = req[3]["Accept-Encoding"]
+                host = req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(user_agent)}",
@@ -69,21 +67,18 @@ def main():
                 ]).encode() 
                 client_conn.send(response)
 
-
             else:
-                 accept_encodeing = req[3]["Accept-Encoding"]
-                 host = req[3]["Host"]
-                 response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                accept_encoding = req[3]["Accept-Encoding"]
+                host = req[3]["Host"]
+                response = "\r\n".join(["HTTP/1.1 404 Not Found",
                                         "Content-Type: text/plain",
                                         f"Content-Length: 0",
                                         f"Host: {host}",
-                                        f"Accept-Encoding: {accept_encodeing}",
+                                        f"Accept-Encoding: {accept_encoding}",
                                         "",
                                         "Page Not Found",
-                 ]).encode()
-                 client_conn.send(response)
-
-
+                ]).encode() 
+                client_conn.send(response)
 
 if __name__ == "__main__":
     main()
