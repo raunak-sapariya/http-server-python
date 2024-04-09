@@ -33,18 +33,18 @@ def main():
 
             elif req[1].startswith("/echo/"):
                 content= req[1][6:]
-                response = "\r\n".join(["HTTP/1.1 200 OK",
+                response = b"\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
                             "",
                             content,
                 ])
-                client_conn.send(response)
+                client_conn.send(response.)
             
             elif "User-Agent" in req[3]:
                 user_agent=req[3]["User-Agent"]
                 accept_encodeing=req[3]["Accept-Encoding"]
-                response = "\r\n".join(["HTTP/1.1 200 OK",
+                response = b"\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Accept-Encoding: {accept_encodeing}"
                             f"Content-Length: {len(user_agent)}",
