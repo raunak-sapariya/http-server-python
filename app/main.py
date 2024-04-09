@@ -43,7 +43,7 @@ def main():
             
             elif "User-Agent" in req[3]:
                 user_agent=req[3]["User-Agent"]
-                accept_encodeing=[3]["Accept-Encoding"]
+                accept_encodeing=req[3]["Accept-Encoding"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Accept-Encoding: {accept_encodeing}"
@@ -51,6 +51,7 @@ def main():
                             "",
                             user_agent,
                 ])
+                client_conn.send(response)
 
 
             else:
