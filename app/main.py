@@ -29,7 +29,7 @@ def main():
             if req[1] == "/":
                 accept_encoding=req[3]["Accept-Encoding"]
                 host=req[3]["Host"]
-                response = "\r\n".join([f"{req[4][0]}",
+                response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
                             f"Host: {host}",
