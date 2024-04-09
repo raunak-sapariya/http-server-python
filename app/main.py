@@ -4,13 +4,12 @@ def Request(data):
     data_str = data.decode()
     lines = data_str.split("\r\n")[:]
     method, path, version = lines[0].split()
-    header={}
-    for line in lines:
+    header = {}
+    for line in lines[1:]:
         if ":" in line:
-            key,value=line.split(": ")
-            header[key]=value
-
-    return method, path,version,header,lines
+            key, value = line.split(": ")
+            header[key] = value
+    return method, path, version, header, lines
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
@@ -73,7 +72,14 @@ def main():
             else:
                  accept_encodeing = req[3]["Accept-Encoding"]
                  host = req[3]["Host"]
-                 response =b"HTTP/1.1 404 Not Found",
+                 response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                                        "Content-Type: text/plain",
+                                        f"Content-Length: 0",
+                                        f"Host: {host}",
+                                        f"Accept-Encoding: {accept_encodeing}",
+                                        "",
+                                        "Page Not Found",
+                 ]).encode()
                  client_conn.send(response)
 
 
