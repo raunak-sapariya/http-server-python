@@ -4,7 +4,13 @@ def Request(data):
     data_str = data.decode()
     lines = data_str.split("\r\n")[:]
     method, path, version = lines[0].split()
-    return method, path,version,lines
+    header={}
+    for line in lines:
+        if ":" in line:
+            key,value=line.split(": ")
+            header[key]=value
+
+    return method, path,version,lines,header
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
@@ -12,8 +18,10 @@ def main():
         client_conn, addr = server_socket.accept()
         with client_conn:
             print("Connected by", addr)
+
             data = client_conn.recv(1024)
             print(data)
+            
             req = Request(data)
             print(req)
             print("----------------------------------------------------------",req[3])
