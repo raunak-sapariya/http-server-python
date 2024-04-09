@@ -27,8 +27,14 @@ def main():
             print("----------------------------------------------------------",req[3])
 
             if req[1] == "/":
-                client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
-
+                #client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
+                response = b"\r\n".join(["HTTP/1.1 200 OK",
+                            "Content-Type: text/plain",
+                            f"Content-Length: 0",
+                            "",
+                            "HELLO WORLD!",
+                ])
+                client_conn.send(response)
 
 
             elif req[1].startswith("/echo/"):
@@ -39,7 +45,7 @@ def main():
                             "",
                             content,
                 ])
-                client_conn.send(response.)
+                client_conn.send(response)
             
             elif "User-Agent" in req[3]:
                 user_agent=req[3]["User-Agent"]
@@ -55,7 +61,14 @@ def main():
 
 
             else:
-                client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
+                #client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
+                response = b"\r\n".join(["HTTP/1.1 404 Not Found",
+                            "Content-Type: text/plain",
+                            f"Content-Length: 0",
+                            "",
+                            "Page Not Found",
+                ])
+                client_conn.send(response)
 
 
 
