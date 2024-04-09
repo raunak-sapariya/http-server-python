@@ -4,8 +4,8 @@ def Request(data):
     data_str = data.decode()
     lines = data_str.split("\r\n")
     print("+++++++++++++++++++++++++++++++++++++++",l)
-    method, path, version,user_agent = lines[0].split()
-    return method, path, version,user_agent
+    method, path, version = lines[0].split()
+    return method, path,version
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
@@ -17,10 +17,12 @@ def main():
             print(data)
             req = Request(data)
             print(req)
-            print("----------------------------------------------------------",req[3])
+            print("----------------------------------------------------------",req[1])
 
             if req[1] == "/":
                 client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
+
+
 
             elif req[1].startswith("/echo/"):
                 content= req[1][6:]
@@ -32,8 +34,12 @@ def main():
                 ])
                 client_conn.send(response)
             
+
+
             else:
                 client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
+
+
 
 if __name__ == "__main__":
     main()
