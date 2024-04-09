@@ -56,19 +56,19 @@ def main():
                 client_conn.send(response)
             
 
-            elif "User-Agent" in req[3]:
-                user_agent=req[3]["User-Agent"]
-                accept_encoding=req[3]["Accept-Encoding"]
-                host=req[3]["Host"]
-                response = "\r\n".join(["HTTP/1.1 200 OK",
-                            "Content-Type: text/plain",
-                            f"Content-Length: {len(user_agent)}",
-                            f"Host: {host}",
-                            f"Accept-Encoding: {accept_encoding}",
-                            "",
-                            user_agent,
-                ]).encode() 
-                client_conn.send(response)
+            # elif "User-Agent" in req[3]:
+            #     user_agent=req[3]["User-Agent"]
+            #     accept_encoding=req[3]["Accept-Encoding"]
+            #     host=req[3]["Host"]
+            #     response = "\r\n".join(["HTTP/1.1 200 OK",
+            #                 "Content-Type: text/plain",
+            #                 f"Content-Length: {len(user_agent)}",
+            #                 f"Host: {host}",
+            #                 f"Accept-Encoding: {accept_encoding}",
+            #                 "",
+            #                 user_agent,
+            #     ]).encode() 
+            #     client_conn.send(response)
 
 
             else:
