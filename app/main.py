@@ -4,7 +4,7 @@ def Request(data):
     data_str = data.decode()
     lines = data_str.split("\r\n")
     method, path, version = lines[0].split()
-    return method, path,version
+    return method, path,version,lines
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
@@ -16,7 +16,7 @@ def main():
             print(data)
             req = Request(data)
             print(req)
-            print("----------------------------------------------------------",req[1])
+            print("----------------------------------------------------------",req[3])
 
             if req[1] == "/":
                 client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
