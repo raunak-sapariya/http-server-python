@@ -27,10 +27,13 @@ def main():
             print("----------------------------------------------------------",req[3])
 
             if req[1] == "/":
-                #client_conn.send(b"HTTP/1.1 200 OK\r\n\r\nHello, World!")
+                accept_encodeing=req[3]["Accept-Encoding"]
+                host=req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
+                            f"Host: {host}",
+                            f"Accept-Encoding: {accept_encodeing}",
                             "",
                             "HELLO WORLD!",
                 ]).encode() 
@@ -39,21 +42,28 @@ def main():
 
             elif req[1].startswith("/echo/"):
                 content= req[1][6:]
+                accept_encodeing=req[3]["Accept-Encoding"]
+                host=req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
+                            f"Host: {host}",
+                            f"Accept-Encoding: {accept_encodeing}",
                             "",
                             content,
                 ]).encode() 
                 client_conn.send(response)
             
+
             elif "User-Agent" in req[3]:
                 user_agent=req[3]["User-Agent"]
                 accept_encodeing=req[3]["Accept-Encoding"]
+                host=req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
-                            f"Accept-Encoding: {accept_encodeing}"
                             f"Content-Length: {len(user_agent)}",
+                            f"Host: {host}",
+                            f"Accept-Encoding: {accept_encodeing}",
                             "",
                             user_agent,
                 ]).encode() 
@@ -61,10 +71,13 @@ def main():
 
 
             else:
-                #client_conn.send(b"HTTP/1.1 404 Not Found\r\n\r\nPage Not Found")
+                accept_encodeing=req[3]["Accept-Encoding"]
+                host=req[3]["Host"]
                 response = "\r\n".join(["HTTP/1.1 404 Not Found",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
+                            f"Host: {host}",
+                            f"Accept-Encoding: {accept_encodeing}",
                             "",
                             "Page Not Found",
                 ]).encode() 
