@@ -73,7 +73,7 @@ def main():
             else:
                  accept_encodeing = req[3]["Accept-Encoding"]
                  host = req[3]["Host"]
-                 response = "\r\n".join(["HTTP/1.1 200 OK",
+                 response = "\r\n".join(["HTTP/1.1 404 Not Found",
                                         "Content-Type: text/plain",
                                         f"Content-Length: 0",
                                         f"Host: {host}",
