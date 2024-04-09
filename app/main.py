@@ -24,12 +24,12 @@ def main():
             
             req = Request(data)
             print(req)
-            print("----------------------------------------------------------",req[3])
+            print("-------",req[4][0])
 
             if req[1] == "/":
                 accept_encoding=req[3]["Accept-Encoding"]
                 host=req[3]["Host"]
-                response = "\r\n".join([f"{req[3][0]}",
+                response = "\r\n".join([f"{req[4][0]}",
                             "Content-Type: text/plain",
                             f"Content-Length: 0",
                             f"Host: {host}",
