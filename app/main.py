@@ -24,7 +24,7 @@ def main():
             
             req = Request(data)
             print(req)
-            print("-------",req[4][0])
+           
 
             if req[1] == "/":
                 accept_encoding=req[3]["Accept-Encoding"]
