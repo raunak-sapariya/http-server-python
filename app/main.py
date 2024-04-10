@@ -18,7 +18,8 @@ def Request(data):
     return method, path,version,header,lines
 
 def handle_conn(client_conn,addr):
-    with client_conn:
+    try:
+        with client_conn:
             print("Connected by", addr)
             
 
@@ -95,6 +96,8 @@ def handle_conn(client_conn,addr):
                                         content,
                  ]).encode()
                  client_conn.send(response)
+    except Exception as e:
+        print(f"Error handling connection: {e}")
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
