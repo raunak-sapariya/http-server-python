@@ -1,5 +1,7 @@
 import socket
 import threading
+from concurrent.futures import ThreadPoolExecutor
+
 
 
 def Request(data):
@@ -96,9 +98,12 @@ def handle_conn(client_conn,addr):
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
+    thread_pool = ThreadPoolExecutor(max_workers=5)
+
     while True:
         client_conn, addr = server_socket.accept()
-        threading.Thread(target=handle_conn, args=(client_conn, addr)).start()
+        thread_pool.submit(handle_conn, client_conn, addr)
+
        
         
         
