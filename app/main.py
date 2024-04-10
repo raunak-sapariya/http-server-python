@@ -1,6 +1,5 @@
 import socket
-import threading
-import argparse
+
 
 def Request(data):
     data_str = data.decode()
@@ -14,13 +13,8 @@ def Request(data):
 
     return method, path,version,header,lines
 
-    #handle  multiple connection
-def main():
-    server_socket = socket.create_server(("0.0.0.0", 4221))
-    while True:
-       
-        client_conn, addr = server_socket.accept()
-        with client_conn:
+def handle_conn(client_conn,addr):
+    with client_conn:
             print("Connected by", addr)
 
             data = client_conn.recv(1024)
@@ -97,6 +91,14 @@ def main():
                  ]).encode()
                  client_conn.send(response)
 
+def main():
+    server_socket = socket.create_server(("0.0.0.0", 4221))
+    while True:
+        client_conn, addr = server_socket.accept()
+        threading.Thread(target=handle_conn, args=(client_conn, addr)).start()
+       
+        
+        
 
 
 if __name__ == "__main__":
