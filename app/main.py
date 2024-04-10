@@ -32,9 +32,9 @@ def handle_conn(client_conn,addr):
 
             if req[1] == "/":
                 accept_encoding = req[3].get("Accept-Encoding", "")
-                host=req[3]["Host"]
-                user_agent=req[3]["User-Agent"]
-                content= "HELLO WORLD!"
+                host = req[3].get("Host", "")
+                user_agent = req[3].get("User-Agent", "")
+                content = "HELLO WORLD!"
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
@@ -51,8 +51,8 @@ def handle_conn(client_conn,addr):
             elif req[1].startswith("/echo/") :
                 content= req[1][6:]
                 accept_encoding = req[3].get("Accept-Encoding", "")
-                host=req[3]["Host"]
-                user_agent=req[3]["User-Agent"]
+                host = req[3].get("Host", "")
+                user_agent = req[3].get("User-Agent", "")
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
@@ -66,9 +66,9 @@ def handle_conn(client_conn,addr):
             
 
             elif req[1].startswith("/user-agent") :
-                user_agent=req[3]["User-Agent"]
+                user_agent = req[3].get("User-Agent", "")
                 accept_encoding = req[3].get("Accept-Encoding", "")
-                host=req[3]["Host"]
+                host = req[3].get("Host", "")
                 response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(user_agent)}",
@@ -83,9 +83,9 @@ def handle_conn(client_conn,addr):
 
             else:
                  accept_encoding = req[3].get("Accept-Encoding", "")
-                 host = req[3]["Host"]
-                 content="Page Not Found"
-                 user_agent=req[3]["User-Agent"]
+                 host = req[3].get("Host", "")
+                 content = "Page Not Found"
+                 user_agent = req[3].get("User-Agent", "")
                  response = "\r\n".join(["HTTP/1.1 404 Not Found",
                                         "Content-Type: text/plain",
                                         f"Content-Length: {len(content)}",
