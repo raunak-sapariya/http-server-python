@@ -31,7 +31,7 @@ def handle_conn(client_conn,addr):
            
 
             if req[1] == "/":
-                accept_encoding=req[3]["Accept-Encoding"]
+                accept_encoding=req[3]["Accept-Encoding",""]
                 host=req[3]["Host"]
                 user_agent=req[3]["User-Agent"]
                 content= "HELLO WORLD!"
