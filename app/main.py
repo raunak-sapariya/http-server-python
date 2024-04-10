@@ -102,7 +102,7 @@ def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
     while True:
         client_conn, addr = server_socket.accept()
-        threading.Thread(target=handle_conn, args=(client_conn, addr, args.directory)).start()
+        threading.Thread(target=handle_conn, args=(client_conn, addr)).start()
 
 if __name__ == "__main__":
     main()
