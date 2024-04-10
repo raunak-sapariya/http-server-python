@@ -74,8 +74,40 @@ def handle_conn(client_conn, addr):
             client_conn.send(response)
 
 
-        elif req[1].startwith("/file/"):
-            pass   
+        elif req[1].startswith("/files/"):
+            file_path = os.path.join(directory, req[1][7:])
+            if os.path.exists(file_path) and os.path.isfile(file_path):
+                with open(file_path, "rb") as file:
+                    file_content = file.read()
+                content_length = len(file_content)
+                user_agent = req[3].get("User-Agent", "")
+                accept_encoding = req[3].get("Accept-Encoding", "")
+                host = req[3].get("Host", "")
+                response = "\r\n".join(["HTTP/1.1 200 OK",
+                                        f"Content-Type: application/octet-stream",
+                                        f"Content-Length: {content_length}",
+                                        f"Host: {host}",
+                                        f'User-Agent: {user_agent}',
+                                        f"Accept-Encoding: {accept_encoding}",
+                                        "",
+                                        ]).encode() + file_content
+                client_conn.send(response)
+            else:
+                
+                content = "File Not Found"
+                user_agent = req[3].get("User-Agent", "")
+                accept_encoding = req[3].get("Accept-Encoding", "")
+                host = req[3].get("Host", "")
+                response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                                        "Content-Type: text/plain",
+                                        f"Content-Length: {len(content)}",
+                                        f"Host: {host}",
+                                        f'User-Agent: {user_agent}',
+                                        f"Accept-Encoding: {accept_encoding}",
+                                        "",
+                                        content,
+                ]).encode()
+                client_conn.send(response)   
 
         else:
             accept_encoding = req[3].get("Accept-Encoding", "")
@@ -95,14 +127,14 @@ def handle_conn(client_conn, addr):
 
 def main():
 
-    # parser = argparse.ArgumentParser(description="HTTP Server")
-    # parser.add_argument("-d","--directory", help="Directory containing files")
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="HTTP Server")
+    parser.add_argument("-d","--directory", help="Directory containing files")
+    args = parser.parse_args()
 
     server_socket = socket.create_server(("0.0.0.0", 4221))
     while True:
         client_conn, addr = server_socket.accept()
-        threading.Thread(target=handle_conn, args=(client_conn, addr)).start()
+        threading.Thread(target=handle_conn, args=(client_conn, addr, args.directory)).start()
 
 if __name__ == "__main__":
     main()
