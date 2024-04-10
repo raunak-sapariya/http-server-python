@@ -44,7 +44,7 @@ def handle_conn(client_conn,addr):
                             "",
                             content,
                 ]).encode() 
-                client_conn.send(response)
+                client_conn.sendall(response)
             
 
 
@@ -62,7 +62,7 @@ def handle_conn(client_conn,addr):
                             "",
                             content,
                 ]).encode() 
-                client_conn.send(response)
+                client_conn.sendall(response)
             
 
             elif req[1].startswith("/user-agent") :
@@ -78,7 +78,7 @@ def handle_conn(client_conn,addr):
                             "",
                             user_agent,
                 ]).encode() 
-                client_conn.send(response)
+                client_conn.sendall(response)
 
 
             else:
@@ -95,7 +95,7 @@ def handle_conn(client_conn,addr):
                                         "",
                                         content,
                  ]).encode()
-                 client_conn.send(response)
+                 client_conn.sendall(response)
     except Exception as e:
         print(f"Error handling connection: {e}")
 
