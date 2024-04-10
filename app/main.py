@@ -3,6 +3,7 @@ import threading
 
 
 def Request(data):
+
     data_str = data.decode()
     lines = data_str.split("\r\n")
     method, path, version = lines[0].split()
@@ -17,6 +18,7 @@ def Request(data):
 def handle_conn(client_conn,addr):
     with client_conn:
             print("Connected by", addr)
+            
 
             data = client_conn.recv(1024)
             print(data)
