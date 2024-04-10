@@ -95,10 +95,10 @@ def handle_conn(client_conn, addr):
 
 def main():
 
-    parser = argparse.ArgumentParser(description="HTTP Server")
-    parser.add_argument("--directory", required=True, help="Directory containing files")
-    args = parser.parse_args()
-    
+    # parser = argparse.ArgumentParser(description="HTTP Server")
+    # parser.add_argument("-d","--directory", help="Directory containing files")
+    # args = parser.parse_args()
+
     server_socket = socket.create_server(("0.0.0.0", 4221))
     while True:
         client_conn, addr = server_socket.accept()
