@@ -73,6 +73,10 @@ def handle_conn(client_conn, addr):
             ]).encode() 
             client_conn.send(response)
 
+
+        elif req[1].startwith("/file/"):
+            pass   
+
         else:
             accept_encoding = req[3].get("Accept-Encoding", "")
             host = req[3].get("Host", "")
@@ -90,10 +94,15 @@ def handle_conn(client_conn, addr):
             client_conn.send(response)
 
 def main():
+
+    parser = argparse.ArgumentParser(description="HTTP Server")
+    parser.add_argument("--directory", required=True, help="Directory containing files")
+    args = parser.parse_args()
+    
     server_socket = socket.create_server(("0.0.0.0", 4221))
     while True:
         client_conn, addr = server_socket.accept()
-        threading.Thread(target=handle_conn, args=(client_conn, addr)).start()
+        threading.Thread(target=handle_conn, args=(client_conn, addr, args.directory)).start()
 
 if __name__ == "__main__":
     main()
