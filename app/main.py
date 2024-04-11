@@ -98,7 +98,7 @@ def handle_conn(client_conn,addr,directory):
                                             f"Accept-Encoding: {accept_encoding}",
                                             "",
                                             ]).encode() 
-                    client_conn.sendall(response+b"\r\n\r\n"+file_content)       
+                    client_conn.sendall(response+b"\r\n"+file_content)       
 
                 else:
                     accept_encoding = req[3].get("Accept-Encoding", "")
