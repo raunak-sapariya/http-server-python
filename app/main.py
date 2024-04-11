@@ -83,7 +83,7 @@ def handle_conn(client_conn,addr,directory):
                 client_conn.sendall(response)
 
             elif req[1].startswith("/files/"):
-                file_path=os.path.join(directory,req[1][7:])
+                file_path=os.path.join(directory,str(req[1][7:]))
                 if os.path.exists(file_path):
                     with open(file_path,"rb") as file:
                         file_content=file.read()
