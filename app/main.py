@@ -116,7 +116,7 @@ def handle_conn(client_conn,addr,directory):
                                             ]).encode()
                     client_conn.sendall(response)
 
-            elif req[0]=="POST" and req[1].startswith("/files/"):
+            elif req[0]== "POST" and req[1].startswith("/files/"):
                 file_path=os.path.join(directory,req[1][7:])
                 print(file_path)
                 file_content=req[-1][-1]
@@ -128,8 +128,8 @@ def handle_conn(client_conn,addr,directory):
                     accept_encoding = req[3].get("Accept-Encoding", "")
                     host = req[3].get("Host", "")
                     user_agent = req[3].get("User-Agent", "")
-                    response = "\r\n".join(["HTTP/1.1 201 OK",
-                                            "Content-Type: application/octet-stream",
+                    response = "\r\n".join(["HTTP/1.1 201 Created",
+                                            "Content-Type: text/plain",
                                             f"Content-Length: {len(file_content)}",
                                             f"Host: {host}",
                                             f'User-Agent: {user_agent}',
