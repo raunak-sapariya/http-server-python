@@ -22,14 +22,14 @@ def Request(data):
 def handle_conn(client_conn,addr,directory):
     try:
         with client_conn:
-            #print("Connected by", addr)
+            print("Connected by", addr)
             
 
             data = client_conn.recv(1024)
-           # print(data)
+            print(data)
             
             req = Request(data)
-            #print("---------------------",req)
+            print("---------------------",req)
            
 
             if req[1] == "/":
@@ -83,18 +83,10 @@ def handle_conn(client_conn,addr,directory):
                 client_conn.sendall(response)
 
             elif req[1].startswith("/files/"):
-                print(directory)
-                if directory==None:
-                    directory= os.getcwd() 
-                print(directory,"efeef")    
                 file_path=os.path.join(directory,req[1][7:])
-                print("cominggggggg")
-                print(file_path)
                 if os.path.exists(file_path):
-                    print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
-                    with open(file_path,"r") as file:
+                    with open(file_path,"rb") as file:
                         file_content=file.read()
-                        print(file_content)
                     accept_encoding = req[3].get("Accept-Encoding", "")
                     host = req[3].get("Host", "")
                     user_agent = req[3].get("User-Agent", "")
@@ -105,9 +97,8 @@ def handle_conn(client_conn,addr,directory):
                                             f'User-Agent: {user_agent}',
                                             f"Accept-Encoding: {accept_encoding}",
                                             "",
-                                            file_content,
                                             ]).encode() 
-                    client_conn.sendall(response)       
+                    client_conn.sendall(response+b"\r\n"+file_content)       
 
                 else:
                     accept_encoding = req[3].get("Accept-Encoding", "")
@@ -125,6 +116,26 @@ def handle_conn(client_conn,addr,directory):
                                             ]).encode()
                     client_conn.sendall(response)
 
+            elif req[0]=="POST" and req[1].startswith("/files/"):
+                file_path=os.path.join(directory,req[1][7:])
+
+                file_content=    
+
+                if os.path.exists(file_path):
+                    with open(file_path,"wb") as file:
+                        file.write(file_content)
+                    accept_encoding = req[3].get("Accept-Encoding", "")
+                    host = req[3].get("Host", "")
+                    user_agent = req[3].get("User-Agent", "")
+                    response = "\r\n".join(["HTTP/1.1 200 OK",
+                                            "Content-Type: application/octet-stream",
+                                            f"Content-Length: {len(file_content)}",
+                                            f"Host: {host}",
+                                            f'User-Agent: {user_agent}',
+                                            f"Accept-Encoding: {accept_encoding}",
+                                            "",
+                                            ]).encode() 
+                    client_conn.sendall(response+b"\r\n"+file_content)
 
             else:
                  accept_encoding = req[3].get("Accept-Encoding", "")
