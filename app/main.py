@@ -120,6 +120,7 @@ def handle_conn(client_conn,addr,directory):
                 file_path=os.path.join(directory,req[1][7:])
 
                 file_content=req[4][7]
+                print(file_content)
 
                 if os.path.exists(file_path):
                     with open(file_path,"wb") as file:
