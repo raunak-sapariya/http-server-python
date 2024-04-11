@@ -141,7 +141,7 @@ def main():
     thread_pool = ThreadPoolExecutor(max_workers=5)
 
     parser = argparse.ArgumentParser(description='Simple HTTP Server')
-    parser.add_argument('--directory', help='Dir file')
+    parser.add_argument('--directory',type=str,help='Dir file')
     args = parser.parse_args()
 
     while True:
