@@ -143,7 +143,7 @@ def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
     thread_pool = ThreadPoolExecutor(max_workers=5)
 
-    parser = arg.ArgumentParser(description='Simple HTTP Server')
+    parser = argparse.ArgumentParser(description='Simple HTTP Server')
     parser.add_argument('--directory', help='Dir file')
     args = parser.parse_args()
 
