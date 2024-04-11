@@ -99,7 +99,7 @@ def handle_conn(client_conn,addr,directory):
                     host = req[3].get("Host", "")
                     user_agent = req[3].get("User-Agent", "")
                     response = "\r\n".join(["HTTP/1.1 200 OK",
-                                            "Content-Type: text/plain",
+                                            "Content-Type: application/octet-stream",
                                             f"Content-Length: {len(file_content)}",
                                             f"Host: {host}",
                                             f'User-Agent: {user_agent}',
