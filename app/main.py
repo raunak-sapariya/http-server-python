@@ -125,6 +125,7 @@ def handle_conn(client_conn,addr,directory):
                 if os.path.exists(file_path):
                     with open(file_path,"wb") as file:
                         file.write(file_content)
+                    print(file)
                     accept_encoding = req[3].get("Accept-Encoding", "")
                     host = req[3].get("Host", "")
                     user_agent = req[3].get("User-Agent", "")
