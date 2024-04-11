@@ -26,10 +26,9 @@ def handle_conn(client_conn,addr,directory):
             
 
             data = client_conn.recv(1024)
-            print(data)
             
             req = Request(data)
-            print("---------------------",req)
+            print("---------------------",req[0])
            
 
             if req[1] == "/":
