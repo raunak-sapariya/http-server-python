@@ -97,8 +97,8 @@ def handle_conn(client_conn,addr,directory):
                                             f'User-Agent: {user_agent}',
                                             f"Accept-Encoding: {accept_encoding}",
                                             "",
-                                            
-                                            ]).encode()+file_content
+                                            file_content,
+                                            ]).encode() 
                     client_conn.sendall(response)       
 
                 else:
