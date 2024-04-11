@@ -152,9 +152,5 @@ def main():
         thread_pool.submit(handle_conn, client_conn, addr,args.directory)
 
        
-        
-        
-
-
 if __name__ == "__main__":
     main()
