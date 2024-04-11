@@ -118,7 +118,6 @@ def handle_conn(client_conn,addr):
                     client_conn.sendall(response)
 
 
-
             else:
                  accept_encoding = req[3].get("Accept-Encoding", "")
                  host = req[3].get("Host", "")
@@ -136,8 +135,6 @@ def handle_conn(client_conn,addr):
                  client_conn.sendall(response)
     except Exception as e:
         print(f"Error handling connection: {e}")
-    finally:
-        client_conn.close()    
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
