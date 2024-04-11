@@ -119,7 +119,7 @@ def handle_conn(client_conn,addr,directory):
             elif req[0]=="POST" and req[1].startswith("/files/"):
                 file_path=os.path.join(directory,req[1][7:])
 
-                file_content=    ""
+                file_content=req[4][7]
 
                 if os.path.exists(file_path):
                     with open(file_path,"wb") as file:
