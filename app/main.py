@@ -117,7 +117,7 @@ def handle_conn(client_conn,addr,directory):
 
             elif req[0] == "POST" and req[1].startswith("/files/"):
                 print("vdvdvdvdv")
-                file_path=os.path.join(os.getcwd(),req[1][7:])
+                file_path=os.path.join(directory,req[1][7:])
                 print(file_path)
                 file_content=req[-1][-1]
                 print(file_content)
