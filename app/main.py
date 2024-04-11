@@ -1,6 +1,8 @@
 import socket
 import threading
 from concurrent.futures import ThreadPoolExecutor
+import os
+import argparse
 
 
 
@@ -80,6 +82,42 @@ def handle_conn(client_conn,addr):
                 ]).encode() 
                 client_conn.sendall(response)
 
+            elif req[1].startswith("/file/"):
+                file_path=os.path.join(directory,req[1][7:])
+                if os.path.exists(file_path):
+                    with open(file_path,"rb") as file:
+                        file_content=file.read()
+                    accept_encoding = req[3].get("Accept-Encoding", "")
+                    host = req[3].get("Host", "")
+                    user_agent = req[3].get("User-Agent", "")
+                    response = "\r\n".join(["HTTP/1.1 200 OK",
+                                            "Content-Type: application/octet-stream",
+                                            f"Content-Length: {len(file_content)}",
+                                            f"Host: {host}",
+                                            f'User-Agent: {user_agent}',
+                                            f"Accept-Encoding: {accept_encoding}",
+                                            "",
+                                            file_content
+                                            ]).encode() 
+                    client_conn.sendall(response)       
+
+                else:
+                    accept_encoding = req[3].get("Accept-Encoding", "")
+                    host = req[3].get("Host", "")
+                    content = "File Not Found"
+                    user_agent = req[3].get("User-Agent", "")
+                    response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                                            "Content-Type: text/plain",
+                                            f"Content-Length: {len(content)}",
+                                            f"Host: {host}",
+                                            f'User-Agent: {user_agent}',
+                                            f"Accept-Encoding: {accept_encoding}",
+                                            "",
+                                            content,
+                                            ]).encode()
+                    client_conn.sendall(response)
+
+
 
             else:
                  accept_encoding = req[3].get("Accept-Encoding", "")
@@ -105,9 +143,13 @@ def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
     thread_pool = ThreadPoolExecutor(max_workers=5)
 
+    parser = arg.ArgumentParser(description='Simple HTTP Server')
+    parser.add_argument('--directory', help='Dir file')
+    args = parser.parse_args()
+
     while True:
         client_conn, addr = server_socket.accept()
-        thread_pool.submit(handle_conn, client_conn, addr)
+        thread_pool.submit(handle_conn, client_conn, addr,args.directory)
 
        
         
