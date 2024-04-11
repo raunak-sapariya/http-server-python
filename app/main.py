@@ -19,7 +19,7 @@ def Request(data):
 
     return method, path,version,header,lines
 
-def handle_conn(client_conn,addr):
+def handle_conn(client_conn,addr,directory):
     try:
         with client_conn:
             print("Connected by", addr)
