@@ -116,7 +116,7 @@ def handle_conn(client_conn,addr,directory):
 
             elif req[0] == "POST" and req[1].startswith("/files/"):
                       
-                        file_path = os.path.join(directory, req[1][7:])
+                        file_path = os.path.join(directory,req[1][7:])
                         file_content = req[-1][-1]   
 
                         with open(file_path, "wb") as file:
@@ -154,6 +154,7 @@ def handle_conn(client_conn,addr,directory):
                                         content,
                  ]).encode()
                  client_conn.sendall(response)
+                 
     except Exception as e:
         print(f"Error handling connection: {e}")
 
