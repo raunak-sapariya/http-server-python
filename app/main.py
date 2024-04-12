@@ -129,14 +129,15 @@ def handle_conn(client_conn,addr,directory):
                     accept_encoding = req[3].get("Accept-Encoding", "")
                     host = req[3].get("Host", "")
                     user_agent = req[3].get("User-Agent", "")
-                    response = "\r\n".join(["HTTP/1.1 201 Created",
+                    res = "\r\n".join(["HTTP/1.1 201 Created",
                                             "Content-Type: text/plain",
                                             f"Content-Length: {len(file_content)}",
                                             f"Host: {host}",
                                             f'User-Agent: {user_agent}',
                                             f"Accept-Encoding: {accept_encoding}",
                                             "",
-                                            ]).encode()
+                                            ])
+                    response=res.encode()+file_content                        
                     client_conn.sendall(response)
                     print(response)
             else:
