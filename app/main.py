@@ -115,16 +115,13 @@ def handle_conn(client_conn,addr,directory):
                     client_conn.sendall(response)
 
             elif req[0] == "POST" and req[1].startswith("/files/"):
-                        print("vdvdvdvdv")
+                      
                         file_path = os.path.join(directory, req[1][7:])
-                        print(file_path)
-                        file_content = req[-1][-1]
-                        print(f"File content: {file_content}")
-                        if os.path.exists(file_path):
-                            print("gerege")
-                            with open(file_path, "wb") as file:
-                                file.write(file_content)
-                            print(f"File written: {file}")
+                        file_content = req[-1][-1]   
+                        with open(file_path, "wb") as file:
+                            
+                            file.write(file_content)
+                           
                             accept_encoding = req[3].get("Accept-Encoding", "")
                             host = req[3].get("Host", "")
                             user_agent = req[3].get("User-Agent", "")
@@ -135,13 +132,12 @@ def handle_conn(client_conn,addr,directory):
                                 f"Host: {host}",
                                 f"User-Agent: {user_agent}",
                                 f"Accept-Encoding: {accept_encoding}",
-                                "",  # Empty line to separate headers from body
+                                "",  
                             ])
-                            print(f"Response headers: {headers}")
+                          
                             response = headers.encode() + file_content
-                            print(f"Response length: {len(response)}")
                             client_conn.sendall(response)
-                            print("Response sent")
+                           
             else:
                  accept_encoding = req[3].get("Accept-Encoding", "")
                  host = req[3].get("Host", "")
