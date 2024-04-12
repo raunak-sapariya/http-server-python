@@ -115,45 +115,44 @@ def handle_conn(client_conn,addr,directory):
                     client_conn.sendall(response)
 
             elif req[0] == "POST" and req[1].startswith("/files/"):
-                      
-                        file_path = os.path.join(directory,req[1][7:])
-                        file_content = req[-1][-1]   
-
-                        with open(file_path, "wb") as file:
-                            file.write(file_content)
-                            print(file)
-                            accept_encoding = req[3].get("Accept-Encoding", "")
-                            host = req[3].get("Host", "")
-                            user_agent = req[3].get("User-Agent", "")
-                            headers = "\r\n".join([
-                                "HTTP/1.1 201 Created",
-                                "Content-Type: text/plain",
-                                f"Content-Length: {len(file_content)}",
-                                f"Host: {host}",
-                                f"User-Agent: {user_agent}",
-                                f"Accept-Encoding: {accept_encoding}",
-                                "",  
-                            ])
-                          
-                            response = headers.encode() + file_content.encode()
-                            print(response)
-                            client_conn.sendall(response)
-                           
+                    file_path = os.path.join(directory, req[1][7:])
+                    
+                    content_length = int(req[3].get("Content-Length", 0))
+                    file_content = req[-1][-1][:content_length].encode()  
+                    
+                    # Writing file content to the specified path
+                    with open(file_path, "wb") as file:
+                        file.write(file_content)
+                    
+                    # Responding with 201 Created if file creation is successful
+                    accept_encoding = req[3].get("Accept-Encoding", "")
+                    host = req[3].get("Host", "")
+                    user_agent = req[3].get("User-Agent", "")
+                    response = "\r\n".join(["HTTP/1.1 201 Created",
+                                            "Content-Type: text/plain",
+                                            f"Content-Length: 0",
+                                            f"Host: {host}",
+                                            f'User-Agent: {user_agent}',
+                                            f"Accept-Encoding: {accept_encoding}",
+                                            "",
+                                            ]).encode() 
+                    client_conn.sendall(response)
+                            
             else:
-                 accept_encoding = req[3].get("Accept-Encoding", "")
-                 host = req[3].get("Host", "")
-                 content = "Page Not Found"
-                 user_agent = req[3].get("User-Agent", "")
-                 response = "\r\n".join(["HTTP/1.1 404 Not Found",
-                                        "Content-Type: text/plain",
-                                        f"Content-Length: {len(content)}",
-                                        f"Host: {host}",
-                                        f'User-Agent: {user_agent}',
-                                        f"Accept-Encoding: {accept_encoding}",
-                                        "",
-                                        content,
-                 ]).encode()
-                 client_conn.sendall(response)
+                    accept_encoding = req[3].get("Accept-Encoding", "")
+                    host = req[3].get("Host", "")
+                    content = "Page Not Found"
+                    user_agent = req[3].get("User-Agent", "")
+                    response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                                            "Content-Type: text/plain",
+                                            f"Content-Length: {len(content)}",
+                                            f"Host: {host}",
+                                            f'User-Agent: {user_agent}',
+                                            f"Accept-Encoding: {accept_encoding}",
+                                            "",
+                                            content,
+                    ]).encode()
+                    client_conn.sendall(response)
 
     except Exception as e:
         print(f"Error handling connection: {e}")
