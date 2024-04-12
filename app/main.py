@@ -119,11 +119,10 @@ def handle_conn(client_conn,addr,directory):
                         file_path=os.path.join(directory,req[1][7:])
                         
                         print(file_path)
-                        file_content = req[-1][-1].encode() 
+                        file_content = req[-1][-1]
 
                         with open(file_path, "wb") as file:
                             file.write(file_content)
-                            print(file)
                             accept_encoding = req[3].get("Accept-Encoding", "")
                             host = req[3].get("Host", "")
                             user_agent = req[3].get("User-Agent", "")
@@ -135,7 +134,7 @@ def handle_conn(client_conn,addr,directory):
                                 f"User-Agent: {user_agent}",
                                 f"Accept-Encoding: {accept_encoding}",
                                 "",  
-                                file_content.decode()
+                                file_content
                             ]).encode()
                           
                             
