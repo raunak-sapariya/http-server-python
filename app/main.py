@@ -65,7 +65,6 @@ def handle_conn(client_conn,addr,directory):
                 ]).encode() 
                 client_conn.sendall(response)
             
-
             elif req[1].startswith("/user-agent") :
                 user_agent = req[3].get("User-Agent", "")
                 accept_encoding = req[3].get("Accept-Encoding", "")
@@ -116,30 +115,32 @@ def handle_conn(client_conn,addr,directory):
                     client_conn.sendall(response)
 
             elif req[0] == "POST" and req[1].startswith("/files/"):
-                print("vdvdvdvdv")
-                file_path=os.path.join(directory,req[1][7:])
-                print(file_path)
-                file_content=req[-1][-1]
-                print(file_content)
-
-                if os.path.exists(file_path):
-                    with open(file_path,"wb") as file:
-                        file.write(file_content)
-                    print(file)
-                    accept_encoding = req[3].get("Accept-Encoding", "")
-                    host = req[3].get("Host", "")
-                    user_agent = req[3].get("User-Agent", "")
-                    res = "\r\n".join(["HTTP/1.1 201 Created",
-                                            "Content-Type: text/plain",
-                                            f"Content-Length: {len(file_content)}",
-                                            f"Host: {host}",
-                                            f'User-Agent: {user_agent}',
-                                            f"Accept-Encoding: {accept_encoding}",
-                                            "",
-                                            ])
-                    response=res.encode()+file_content                        
-                    client_conn.sendall(response)
-                    print(response)
+                        print("vdvdvdvdv")
+                        file_path = os.path.join(directory, req[1][7:])
+                        print(file_path)
+                        file_content = req[-1][-1]
+                        print(f"File content: {file_content}")
+                        if os.path.exists(file_path):
+                            with open(file_path, "wb") as file:
+                                file.write(file_content)
+                            print(f"File written: {file}")
+                            accept_encoding = req[3].get("Accept-Encoding", "")
+                            host = req[3].get("Host", "")
+                            user_agent = req[3].get("User-Agent", "")
+                            headers = "\r\n".join([
+                                "HTTP/1.1 201 Created",
+                                "Content-Type: text/plain",
+                                f"Content-Length: {len(file_content)}",
+                                f"Host: {host}",
+                                f"User-Agent: {user_agent}",
+                                f"Accept-Encoding: {accept_encoding}",
+                                "",  # Empty line to separate headers from body
+                            ])
+                            print(f"Response headers: {headers}")
+                            response = headers.encode() + file_content
+                            print(f"Response length: {len(response)}")
+                            client_conn.sendall(response)
+                            print("Response sent")
             else:
                  accept_encoding = req[3].get("Accept-Encoding", "")
                  host = req[3].get("Host", "")
