@@ -119,7 +119,7 @@ def handle_conn(client_conn,addr,directory):
                 print("vdvdvdvdv")
                 file_path=os.path.join(directory,req[1][7:])
                 print(file_path)
-                file_content=req[-1][-1].encode()
+                file_content=req[-1][-1]
                 print(file_content)
 
                 if os.path.exists(file_path):
@@ -136,7 +136,7 @@ def handle_conn(client_conn,addr,directory):
                                             f'User-Agent: {user_agent}',
                                             f"Accept-Encoding: {accept_encoding}",
                                             "",
-                                            ]).encode()+file_content
+                                            ]).encode()
                     client_conn.sendall(response)
                     print(response)
             else:
