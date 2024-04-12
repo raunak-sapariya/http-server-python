@@ -139,20 +139,20 @@ def handle_conn(client_conn,addr,directory):
                     client_conn.sendall(response)
                             
             else:
-                    accept_encoding = req[3].get("Accept-Encoding", "")
-                    host = req[3].get("Host", "")
-                    content = "Page Not Found"
-                    user_agent = req[3].get("User-Agent", "")
-                    response = "\r\n".join(["HTTP/1.1 404 Not Found",
-                                            "Content-Type: text/plain",
-                                            f"Content-Length: {len(content)}",
-                                            f"Host: {host}",
-                                            f'User-Agent: {user_agent}',
-                                            f"Accept-Encoding: {accept_encoding}",
+                accept_encoding = req[3].get("Accept-Encoding", "")
+                host = req[3].get("Host", "")
+                content = "Page Not Found"
+                user_agent = req[3].get("User-Agent", "")
+                response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                                        "Content-Type: text/plain",
+                                        f"Content-Length: {len(content)}",
+                                        f"Host: {host}",
+                                        f'User-Agent: {user_agent}',
+                                        f"Accept-Encoding: {accept_encoding}",
                                             "",
-                                            content,
-                    ]).encode()
-                    client_conn.sendall(response)
+                                        content,
+                ]).encode()
+                client_conn.sendall(response)
 
     except Exception as e:
         print(f"Error handling connection: {e}")
