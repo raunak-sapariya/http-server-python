@@ -135,7 +135,7 @@ def handle_conn(client_conn,addr,directory):
                                 "",  
                             ])
                           
-                            response = headers.encode() + file_content
+                            response = headers.encode() + file_content.encode()
                             print(response)
                             client_conn.sendall(response)
                            
@@ -154,7 +154,7 @@ def handle_conn(client_conn,addr,directory):
                                         content,
                  ]).encode()
                  client_conn.sendall(response)
-                 
+
     except Exception as e:
         print(f"Error handling connection: {e}")
 
