@@ -137,7 +137,7 @@ def handle_conn(client_conn,addr,directory):
                                 "",  
                             ])
                           
-                            response = headers.encode() + file_content.encode
+                            response = headers.encode() + file_content.encode()
                             print(response)
                             client_conn.sendall(response)
                            
