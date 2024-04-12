@@ -121,6 +121,7 @@ def handle_conn(client_conn,addr,directory):
                         file_content = req[-1][-1]
                         print(f"File content: {file_content}")
                         if os.path.exists(file_path):
+                            print("gerege")
                             with open(file_path, "wb") as file:
                                 file.write(file_content)
                             print(f"File written: {file}")
