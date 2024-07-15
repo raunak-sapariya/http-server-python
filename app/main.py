@@ -3,6 +3,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 import os
 import argparse
+import gzip
 
 def Request(data):
     data_str = data.decode()
@@ -54,7 +55,7 @@ def handle_conn(client_conn,addr,directory):
                             f"Accept-Encoding: {accept_encoding}",
                             f"Content-Encoding: gzip",
                             "",
-                            content,
+                            gzip.compress(content),
                     ]).encode() 
                 else :
                     response = "\r\n".join(["HTTP/1.1 200 OK",
