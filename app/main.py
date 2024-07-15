@@ -42,7 +42,7 @@ def handle_conn(client_conn,addr,directory):
             
             elif req[1].startswith("/echo/") :
                 content= req[1][6:]
-                gzip_content=gzip.compress(content)
+                gzip_content=gzip.compress(content.encode())
                 accept_encoding = req[3].get("Accept-Encoding", "")
                 print(content.encode())
                 host = req[3].get("Host", "")
