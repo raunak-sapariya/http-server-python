@@ -4,10 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 import os
 import argparse
 
-
-
 def Request(data):
-
     data_str = data.decode()
     lines = data_str.split("\r\n")
     method, path, version = lines[0].split()
@@ -16,21 +13,16 @@ def Request(data):
         if ":" in line:
             key,value=line.split(": ")
             header[key]=value
-
     return method, path,version,header,lines
 
 def handle_conn(client_conn,addr,directory):
     try:
         with client_conn:
             print("Connected by", addr)
-            
-
             data = client_conn.recv(1024)
-            
             req = Request(data)
             print("---------------------",req[0])
            
-
             if req[1] == "/":
                 accept_encoding = req[3].get("Accept-Encoding", "")
                 host = req[3].get("Host", "")
@@ -47,8 +39,6 @@ def handle_conn(client_conn,addr,directory):
                 ]).encode() 
                 client_conn.sendall(response)
             
-
-
             elif req[1].startswith("/echo/") :
                 content= req[1][6:]
                 accept_encoding = req[3].get("Accept-Encoding", "")
