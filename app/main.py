@@ -62,6 +62,7 @@ def handle_conn(client_conn,addr,directory):
                             f"Host: {host}",
                             f'User-Agent: {user_agent}',
                             f"Accept-Encoding: {accept_encoding}",
+                            f"Content-Encoding: {accept_encoding}",
                             "",
                             content,
                     ]).encode() 
@@ -72,7 +73,6 @@ def handle_conn(client_conn,addr,directory):
                             f"Host: {host}",
                             f'User-Agent: {user_agent}',
                             f"Accept-Encoding: {accept_encoding}",
-                            f"Content-Encoding: invalid-encoding",
                             "",
                             content,
                     ]).encode() 
