@@ -42,6 +42,7 @@ def handle_conn(client_conn,addr,directory):
             
             elif req[1].startswith("/echo/") :
                 content= req[1][6:]
+                gzip_content=gzip.compress(content)
                 accept_encoding = req[3].get("Accept-Encoding", "")
                 print(accept_encoding)
                 print(content)
@@ -56,7 +57,7 @@ def handle_conn(client_conn,addr,directory):
                             f"Accept-Encoding: {accept_encoding}",
                             f"Content-Encoding: gzip",
                             "",
-                            gzip.compress(content),
+                            gzip_content,
                     ]).encode() 
                 else :
                     response = "\r\n".join(["HTTP/1.1 200 OK",
