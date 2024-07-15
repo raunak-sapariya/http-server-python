@@ -55,15 +55,29 @@ def handle_conn(client_conn,addr,directory):
                 print(accept_encoding)
                 host = req[3].get("Host", "")
                 user_agent = req[3].get("User-Agent", "")
-                response = "\r\n".join(["HTTP/1.1 200 OK",
+                if accept_encoding in accept_encoding:
+                    response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
                             f"Content-Length: {len(content)}",
                             f"Host: {host}",
                             f'User-Agent: {user_agent}',
                             f"Accept-Encoding: {accept_encoding}",
+                            f"Content-Encoding: {accept_encoding}",
                             "",
                             content,
-                ]).encode() 
+                    ]).encode() 
+                else :
+                    response = "\r\n".join(["HTTP/1.1 200 OK",
+                            "Content-Type: text/plain",
+                            f"Content-Length: {len(content)}",
+                            f"Host: {host}",
+                            f'User-Agent: {user_agent}',
+                            f"Accept-Encoding: {accept_encoding}",
+                            f"Content-Encoding: None",
+                            "",
+                            content,
+                    ]).encode() 
+
                 client_conn.sendall(response)
             
             elif req[1].startswith("/user-agent") :
