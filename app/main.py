@@ -56,7 +56,6 @@ def handle_conn(client_conn,addr,directory):
                             f"Accept-Encoding: {accept_encoding}",
                             f"Content-Encoding: gzip",
                             "",
-                            gzip_content,
                     ]).encode() 
                 else :
                     response = "\r\n".join(["HTTP/1.1 200 OK",
