@@ -50,11 +50,12 @@ def handle_conn(client_conn,addr,directory):
                 if "gzip" in accept_encoding:
                     response = "\r\n".join(["HTTP/1.1 200 OK",
                             "Content-Type: text/plain",
-                            f"Content-Length: {len(content)}",
+                            f"Content-Length: {len(gzip_content)}",
                             f"Host: {host}",
                             f'User-Agent: {user_agent}',
                             f"Accept-Encoding: {accept_encoding}",
                             f"Content-Encoding: gzip",
+                            "",
                             gzip_content,
                     ]).encode() 
                 else :
@@ -67,8 +68,7 @@ def handle_conn(client_conn,addr,directory):
                             "",
                             content,
                     ]).encode() 
-
-                client_conn.sendall(response)
+                client_conn.sendall(response+b"\r\n"+gzip_content)   
             
             elif req[1].startswith("/user-agent") :
                 user_agent = req[3].get("User-Agent", "")
