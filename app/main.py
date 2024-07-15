@@ -44,7 +44,7 @@ def handle_conn(client_conn,addr,directory):
                 content= req[1][6:]
                 gzip_content=gzip.compress(content)
                 accept_encoding = req[3].get("Accept-Encoding", "")
-                print(accept_encoding)
+                print(accept_encoding.encode())
                 print(content)
                 host = req[3].get("Host", "")
                 user_agent = req[3].get("User-Agent", "")
