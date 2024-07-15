@@ -52,6 +52,7 @@ def handle_conn(client_conn,addr,directory):
             elif req[1].startswith("/echo/") :
                 content= req[1][6:]
                 accept_encoding = req[3].get("Accept-Encoding", "")
+                print(accept_encoding)
                 host = req[3].get("Host", "")
                 user_agent = req[3].get("User-Agent", "")
                 response = "\r\n".join(["HTTP/1.1 200 OK",
@@ -73,7 +74,7 @@ def handle_conn(client_conn,addr,directory):
                             "Content-Type: text/plain",
                             f"Content-Length: {len(user_agent)}",
                             f"Host: {host}",
-                            f'User-Agent: {user_agent}'
+                            f'User-Agent: {user_agent}',
                             f"Accept-Encoding: {accept_encoding}",
                             "",
                             user_agent,
@@ -137,8 +138,6 @@ def handle_conn(client_conn,addr,directory):
                                 file_content.decode()
                             ]).encode()
                           
-                            
-                            print(response)
                             client_conn.sendall(response)
                            
             else:
