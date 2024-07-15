@@ -56,7 +56,6 @@ def handle_conn(client_conn,addr,directory):
                             f'User-Agent: {user_agent}',
                             f"Accept-Encoding: {accept_encoding}",
                             f"Content-Encoding: gzip",
-                            "",
                             gzip_content,
                     ]).encode() 
                 else :
