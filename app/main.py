@@ -63,9 +63,8 @@ def handle_conn(client_conn, addr, directory):
                                     f"Accept-Encoding: {accept_encoding}",
                                     connection_header,
                                     "",
-                                    content,
                         ]).encode() 
-                        client_conn.sendall(response)
+                        client_conn.sendall(response+b"\r\n"+content.encode())
                         
                     
                     elif req[1].startswith("/echo/") :
@@ -96,7 +95,6 @@ def handle_conn(client_conn, addr, directory):
                                     f"Accept-Encoding: {accept_encoding}",
                                     connection_header,
                                     "",
-                                    content,
                             ]).encode()
                             client_conn.sendall(response+b"\r\n"+content.encode())
                     
