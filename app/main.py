@@ -27,10 +27,15 @@ def handle_conn(client_conn, addr, directory):
     try:
         with client_conn:
             print("Connected by", addr) 
+            buffer = b""
             while True:
                 data = client_conn.recv(1024)
                 if not data:
                     break
+                buffer += data
+                if b"\r\n\r\n" in buffer:
+                    break
+
 
                 req = Request(data)
                 if req is None:
@@ -41,7 +46,7 @@ def handle_conn(client_conn, addr, directory):
 
                 # Check if client wants to close the connection
                 connection_close = headers.get("Connection", "").lower() == "close"
-                connection_header = "Connection: close" if connection_close else ""
+                connection_header = "Connection: close" if connection_close else "Connection: keep-alive"
 
                 # print("---------------------",req[0])
                 print(f"Request: {method} {path} {version}")
