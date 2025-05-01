@@ -24,9 +24,9 @@ def Request(data):
         return None
 
 def handle_conn(client_conn,addr,directory):
-    print("Connected by", addr)
     try:
         with client_conn:
+            print("Connected by", addr) 
             while True:
                 data = client_conn.recv(1024)
                 if not data:
