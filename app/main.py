@@ -18,12 +18,12 @@ def Request(data):
             if ":" in line:
                 key,value=line.split(": ")
                 header[key]=value
-        return method, path,version,header,lines
+        return method, path, version, header, lines
     except Exception as e:
         print(f"Error parsing request: {e}")
         return None
 
-def handle_conn(client_conn,addr,directory):
+def handle_conn(client_conn, addr, directory):
     try:
         with client_conn:
             print("Connected by", addr) 
