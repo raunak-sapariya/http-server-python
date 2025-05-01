@@ -37,13 +37,13 @@ def handle_conn(client_conn,addr,directory):
                     print("Invalid request")
                     break
 
+                method, path, version, headers, lines = req
+
                 # Check if client wants to close the connection
                 connection_close = headers.get("Connection", "").lower() == "close"
                 connection_header = "Connection: close" if connection_close else ""
 
                 # print("---------------------",req[0])
-                # Print request details for debugging
-                method, path, version, headers, lines = req
                 print(f"Request: {method} {path} {version}")
                 print(f"Headers: {headers}")
                 if len(lines) > 1 and lines[-2] == '':
