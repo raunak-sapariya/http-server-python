@@ -28,6 +28,7 @@ def handle_conn(client_conn, addr, directory):
         with client_conn:
             print("Connected by", addr) 
             while True:
+                buffer = b""
                 while b"\r\n\r\n" not in buffer:
                     chunk = client_conn.recv(1024)
                     if not chunk:
