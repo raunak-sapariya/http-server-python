@@ -86,6 +86,7 @@ def handle_conn(client_conn, addr, directory):
                                     connection_header,
                                     "",
                             ]).encode() 
+                            client_conn.sendall(response+b"\r\n"+gzip_content)   
                         else :
                             response = "\r\n".join(["HTTP/1.1 200 OK",
                                     "Content-Type: text/plain",
@@ -96,8 +97,8 @@ def handle_conn(client_conn, addr, directory):
                                     connection_header,
                                     "",
                                     content,
-                            ]).encode() 
-                        client_conn.sendall(response+b"\r\n"+gzip_content)   
+                            ]).encode()
+                            client_conn.sendall(response+b"\r\n"+content.encode())
                     
                     elif req[1].startswith("/user-agent") :
                         user_agent = req[3].get("User-Agent", "")
