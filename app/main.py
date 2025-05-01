@@ -27,17 +27,14 @@ def handle_conn(client_conn, addr, directory):
     try:
         with client_conn:
             print("Connected by", addr) 
-            buffer = b""
             while True:
-                data = client_conn.recv(1024)
-                if not data:
-                    break
-                buffer += data
-                if b"\r\n\r\n" in buffer:
-                    break
+                while b"\r\n\r\n" not in buffer:
+                    chunk = client_conn.recv(1024)
+                    if not chunk:
+                        return
+                    buffer += chunk
 
-
-                req = Request(data)
+                req = Request(buffer)
                 if req is None:
                     print("Invalid request")
                     break
@@ -211,7 +208,7 @@ def main():
     thread_pool = ThreadPoolExecutor(max_workers=5)
 
     parser = argparse.ArgumentParser(description='Simple HTTP Server')
-    parser.add_argument('--directory',type=str,help='Dir file')
+    parser.add_argument('--directory', type=str, help='Dir file')
     args = parser.parse_args()
 
     while True:
