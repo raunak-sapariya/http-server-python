@@ -47,7 +47,9 @@ def handle_conn(client_conn, addr, directory):
                 print(f"Request: {method} {path} {version}")
                 print(f"Headers: {headers}")
                 if len(lines) > 1 and lines[-2] == '':
+
                     print(f"Body: {lines[-1]}")
+
                     if req[1] == "/":
                         accept_encoding = req[3].get("Accept-Encoding", "")
                         host = req[3].get("Host", "")
@@ -64,6 +66,7 @@ def handle_conn(client_conn, addr, directory):
                                     content,
                         ]).encode() 
                         client_conn.sendall(response)
+                        
                     
                     elif req[1].startswith("/echo/") :
                         content= req[1][6:]
@@ -108,9 +111,8 @@ def handle_conn(client_conn, addr, directory):
                                     f"Accept-Encoding: {accept_encoding}",
                                     connection_header,
                                     "",
-                                    user_agent,
                         ]).encode() 
-                        client_conn.sendall(response)
+                        client_conn.sendall(response+user_agent.encode())
 
                     elif req[0] == "GET" and req[1].startswith("/files/"):
                         file_path=os.path.join(directory,req[1][7:])
