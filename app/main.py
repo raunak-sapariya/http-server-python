@@ -1,20 +1,27 @@
 import socket
-import threading
 from concurrent.futures import ThreadPoolExecutor
 import os
 import argparse
 import gzip
 
 def Request(data):
-    data_str = data.decode()
-    lines = data_str.split("\r\n")
-    method, path, version = lines[0].split()
-    header={}
-    for line in lines:
-        if ":" in line:
-            key,value=line.split(": ")
-            header[key]=value
-    return method, path,version,header,lines
+    """
+    Parse raw HTTP request data into components.
+    Returns (method, path, version, headers, lines) or None on failure.
+    """
+    try:
+        data_str = data.decode()
+        lines = data_str.split("\r\n")
+        method, path, version = lines[0].split()
+        header={}
+        for line in lines:
+            if ":" in line:
+                key,value=line.split(": ")
+                header[key]=value
+        return method, path,version,header,lines
+    except Exception as e:
+        print(f"Error parsing request: {e}")
+        return None
 
 def handle_conn(client_conn,addr,directory):
     try:
@@ -162,6 +169,9 @@ def handle_conn(client_conn,addr,directory):
 
     except Exception as e:
         print(f"Error handling connection: {e}")
+    finally:
+        client_conn.close()
+        print("Connection closed", addr)
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
