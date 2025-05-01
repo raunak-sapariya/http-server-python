@@ -22,6 +22,7 @@ def handle_conn(client_conn,addr,directory):
             print("Connected by", addr)
             data = client_conn.recv(1024)
             req = Request(data)
+            # print(req)
             print("---------------------",req[0])
            
             if req[1] == "/":
@@ -164,6 +165,8 @@ def handle_conn(client_conn,addr,directory):
 
 def main():
     server_socket = socket.create_server(("0.0.0.0", 4221))
+    print("Server started on port 4221")
+    server_socket.listen(5)
     thread_pool = ThreadPoolExecutor(max_workers=5)
 
     parser = argparse.ArgumentParser(description='Simple HTTP Server')
