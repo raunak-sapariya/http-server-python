@@ -112,7 +112,7 @@ def handle_conn(client_conn, addr, directory):
                                     connection_header,
                                     "",
                         ]).encode() 
-                        client_conn.sendall(response+user_agent.encode())
+                        client_conn.sendall(response+b"\r\n"+user_agent.encode())
 
                     elif req[0] == "GET" and req[1].startswith("/files/"):
                         file_path=os.path.join(directory,req[1][7:])
