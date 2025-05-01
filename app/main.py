@@ -37,6 +37,10 @@ def handle_conn(client_conn,addr,directory):
                     print("Invalid request")
                     break
 
+                # Check if client wants to close the connection
+                connection_close = headers.get("Connection", "").lower() == "close"
+                connection_header = "Connection: close" if connection_close else ""
+
                 # print("---------------------",req[0])
                 # Print request details for debugging
                 method, path, version, headers, lines = req
@@ -55,6 +59,7 @@ def handle_conn(client_conn,addr,directory):
                                     f"Host: {host}",
                                     f'User-Agent: {user_agent}',
                                     f"Accept-Encoding: {accept_encoding}",
+                                    connection_header,
                                     "",
                                     content,
                         ]).encode() 
@@ -75,6 +80,7 @@ def handle_conn(client_conn,addr,directory):
                                     f'User-Agent: {user_agent}',
                                     f"Accept-Encoding: {accept_encoding}",
                                     f"Content-Encoding: gzip",
+                                    connection_header,
                                     "",
                             ]).encode() 
                         else :
@@ -84,6 +90,7 @@ def handle_conn(client_conn,addr,directory):
                                     f"Host: {host}",
                                     f'User-Agent: {user_agent}',
                                     f"Accept-Encoding: {accept_encoding}",
+                                    connection_header,
                                     "",
                                     content,
                             ]).encode() 
@@ -99,6 +106,7 @@ def handle_conn(client_conn,addr,directory):
                                     f"Host: {host}",
                                     f'User-Agent: {user_agent}',
                                     f"Accept-Encoding: {accept_encoding}",
+                                    connection_header,
                                     "",
                                     user_agent,
                         ]).encode() 
@@ -118,6 +126,7 @@ def handle_conn(client_conn,addr,directory):
                                                     f"Host: {host}",
                                                     f'User-Agent: {user_agent}',
                                                     f"Accept-Encoding: {accept_encoding}",
+                                                    connection_header,
                                                     "",
                                                     ]).encode() 
                             client_conn.sendall(response+b"\r\n"+file_content)       
@@ -133,6 +142,7 @@ def handle_conn(client_conn,addr,directory):
                                                     f"Host: {host}",
                                                     f'User-Agent: {user_agent}',
                                                     f"Accept-Encoding: {accept_encoding}",
+                                                    connection_header,
                                                     "",
                                                     content,
                                                     ]).encode()
@@ -157,6 +167,7 @@ def handle_conn(client_conn,addr,directory):
                                         f"Host: {host}",
                                         f"User-Agent: {user_agent}",
                                         f"Accept-Encoding: {accept_encoding}",
+                                        connection_header,
                                         "",  
                                         file_content.decode()
                                     ]).encode()
@@ -174,6 +185,7 @@ def handle_conn(client_conn,addr,directory):
                                                 f"Host: {host}",
                                                 f'User-Agent: {user_agent}',
                                                 f"Accept-Encoding: {accept_encoding}",
+                                                connection_header,
                                                 "",
                                                 content,
                         ]).encode()
