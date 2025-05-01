@@ -145,9 +145,8 @@ def handle_conn(client_conn, addr, directory):
                                                     f"Accept-Encoding: {accept_encoding}",
                                                     connection_header,
                                                     "",
-                                                    content,
                                                     ]).encode()
-                            client_conn.sendall(response)
+                            client_conn.sendall(response+b"\r\n"+content.encode())
 
                     elif req[0] == "POST" and req[1].startswith("/files/"):
                             
