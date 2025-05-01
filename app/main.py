@@ -37,90 +37,136 @@ def handle_conn(client_conn,addr,directory):
                     print("Invalid request")
                     break
 
-                print("---------------------",req[0])
-            
-                if req[1] == "/":
-                    accept_encoding = req[3].get("Accept-Encoding", "")
-                    host = req[3].get("Host", "")
-                    user_agent = req[3].get("User-Agent", "")
-                    content = "HELLO WORLD!"
-                    response = "\r\n".join(["HTTP/1.1 200 OK",
-                                "Content-Type: text/plain",
-                                f"Content-Length: {len(content)}",
-                                f"Host: {host}",
-                                f'User-Agent: {user_agent}',
-                                f"Accept-Encoding: {accept_encoding}",
-                                "",
-                                content,
-                    ]).encode() 
-                    client_conn.sendall(response)
-                
-                elif req[1].startswith("/echo/") :
-                    content= req[1][6:]
-                    gzip_content=gzip.compress(content.encode())
-                    accept_encoding = req[3].get("Accept-Encoding", "")
-                    print(content.encode())
-                    host = req[3].get("Host", "")
-                    user_agent = req[3].get("User-Agent", "")
-                    if "gzip" in accept_encoding:
-                        response = "\r\n".join(["HTTP/1.1 200 OK",
-                                "Content-Type: text/plain",
-                                f"Content-Length: {len(gzip_content)}",
-                                f"Host: {host}",
-                                f'User-Agent: {user_agent}',
-                                f"Accept-Encoding: {accept_encoding}",
-                                f"Content-Encoding: gzip",
-                                "",
-                        ]).encode() 
-                    else :
-                        response = "\r\n".join(["HTTP/1.1 200 OK",
-                                "Content-Type: text/plain",
-                                f"Content-Length: {len(content)}",
-                                f"Host: {host}",
-                                f'User-Agent: {user_agent}',
-                                f"Accept-Encoding: {accept_encoding}",
-                                "",
-                                content,
-                        ]).encode() 
-                    client_conn.sendall(response+b"\r\n"+gzip_content)   
-                
-                elif req[1].startswith("/user-agent") :
-                    user_agent = req[3].get("User-Agent", "")
-                    accept_encoding = req[3].get("Accept-Encoding", "")
-                    host = req[3].get("Host", "")
-                    response = "\r\n".join(["HTTP/1.1 200 OK",
-                                "Content-Type: text/plain",
-                                f"Content-Length: {len(user_agent)}",
-                                f"Host: {host}",
-                                f'User-Agent: {user_agent}',
-                                f"Accept-Encoding: {accept_encoding}",
-                                "",
-                                user_agent,
-                    ]).encode() 
-                    client_conn.sendall(response)
-
-                elif req[0] == "GET" and req[1].startswith("/files/"):
-                    file_path=os.path.join(directory,req[1][7:])
-                    if os.path.exists(file_path):
-                        with open(file_path,"rb") as file:
-                            file_content=file.read()
+                # print("---------------------",req[0])
+                # Print request details for debugging
+                method, path, version, headers, lines = req
+                print(f"Request: {method} {path} {version}")
+                print(f"Headers: {headers}")
+                if len(lines) > 1 and lines[-2] == '':
+                    print(f"Body: {lines[-1]}")
+                    if req[1] == "/":
                         accept_encoding = req[3].get("Accept-Encoding", "")
                         host = req[3].get("Host", "")
                         user_agent = req[3].get("User-Agent", "")
+                        content = "HELLO WORLD!"
                         response = "\r\n".join(["HTTP/1.1 200 OK",
-                                                "Content-Type: application/octet-stream",
-                                                f"Content-Length: {len(file_content)}",
-                                                f"Host: {host}",
-                                                f'User-Agent: {user_agent}',
-                                                f"Accept-Encoding: {accept_encoding}",
-                                                "",
-                                                ]).encode() 
-                        client_conn.sendall(response+b"\r\n"+file_content)       
+                                    "Content-Type: text/plain",
+                                    f"Content-Length: {len(content)}",
+                                    f"Host: {host}",
+                                    f'User-Agent: {user_agent}',
+                                    f"Accept-Encoding: {accept_encoding}",
+                                    "",
+                                    content,
+                        ]).encode() 
+                        client_conn.sendall(response)
+                    
+                    elif req[1].startswith("/echo/") :
+                        content= req[1][6:]
+                        gzip_content=gzip.compress(content.encode())
+                        accept_encoding = req[3].get("Accept-Encoding", "")
+                        print(content.encode())
+                        host = req[3].get("Host", "")
+                        user_agent = req[3].get("User-Agent", "")
+                        if "gzip" in accept_encoding:
+                            response = "\r\n".join(["HTTP/1.1 200 OK",
+                                    "Content-Type: text/plain",
+                                    f"Content-Length: {len(gzip_content)}",
+                                    f"Host: {host}",
+                                    f'User-Agent: {user_agent}',
+                                    f"Accept-Encoding: {accept_encoding}",
+                                    f"Content-Encoding: gzip",
+                                    "",
+                            ]).encode() 
+                        else :
+                            response = "\r\n".join(["HTTP/1.1 200 OK",
+                                    "Content-Type: text/plain",
+                                    f"Content-Length: {len(content)}",
+                                    f"Host: {host}",
+                                    f'User-Agent: {user_agent}',
+                                    f"Accept-Encoding: {accept_encoding}",
+                                    "",
+                                    content,
+                            ]).encode() 
+                        client_conn.sendall(response+b"\r\n"+gzip_content)   
+                    
+                    elif req[1].startswith("/user-agent") :
+                        user_agent = req[3].get("User-Agent", "")
+                        accept_encoding = req[3].get("Accept-Encoding", "")
+                        host = req[3].get("Host", "")
+                        response = "\r\n".join(["HTTP/1.1 200 OK",
+                                    "Content-Type: text/plain",
+                                    f"Content-Length: {len(user_agent)}",
+                                    f"Host: {host}",
+                                    f'User-Agent: {user_agent}',
+                                    f"Accept-Encoding: {accept_encoding}",
+                                    "",
+                                    user_agent,
+                        ]).encode() 
+                        client_conn.sendall(response)
 
+                    elif req[0] == "GET" and req[1].startswith("/files/"):
+                        file_path=os.path.join(directory,req[1][7:])
+                        if os.path.exists(file_path):
+                            with open(file_path,"rb") as file:
+                                file_content=file.read()
+                            accept_encoding = req[3].get("Accept-Encoding", "")
+                            host = req[3].get("Host", "")
+                            user_agent = req[3].get("User-Agent", "")
+                            response = "\r\n".join(["HTTP/1.1 200 OK",
+                                                    "Content-Type: application/octet-stream",
+                                                    f"Content-Length: {len(file_content)}",
+                                                    f"Host: {host}",
+                                                    f'User-Agent: {user_agent}',
+                                                    f"Accept-Encoding: {accept_encoding}",
+                                                    "",
+                                                    ]).encode() 
+                            client_conn.sendall(response+b"\r\n"+file_content)       
+
+                        else:
+                            accept_encoding = req[3].get("Accept-Encoding", "")
+                            host = req[3].get("Host", "")
+                            content = "File Not Found"
+                            user_agent = req[3].get("User-Agent", "")
+                            response = "\r\n".join(["HTTP/1.1 404 Not Found",
+                                                    "Content-Type: text/plain",
+                                                    f"Content-Length: {len(content)}",
+                                                    f"Host: {host}",
+                                                    f'User-Agent: {user_agent}',
+                                                    f"Accept-Encoding: {accept_encoding}",
+                                                    "",
+                                                    content,
+                                                    ]).encode()
+                            client_conn.sendall(response)
+
+                    elif req[0] == "POST" and req[1].startswith("/files/"):
+                            
+                                file_path=os.path.join(directory,req[1][7:])
+                                
+                                print(file_path)
+                                file_content = req[-1][-1].encode() 
+
+                                with open(file_path, "wb") as file:
+                                    file.write(file_content)
+                                    accept_encoding = req[3].get("Accept-Encoding", "")
+                                    host = req[3].get("Host", "")
+                                    user_agent = req[3].get("User-Agent", "")
+                                    response= "\r\n".join([
+                                        "HTTP/1.1 201 Created",
+                                        "Content-Type: text/plain",
+                                        f"Content-Length: {len(file_content)}",
+                                        f"Host: {host}",
+                                        f"User-Agent: {user_agent}",
+                                        f"Accept-Encoding: {accept_encoding}",
+                                        "",  
+                                        file_content.decode()
+                                    ]).encode()
+                                
+                                    client_conn.sendall(response)
+                                
                     else:
                         accept_encoding = req[3].get("Accept-Encoding", "")
                         host = req[3].get("Host", "")
-                        content = "File Not Found"
+                        content = "Page Not Found"
                         user_agent = req[3].get("User-Agent", "")
                         response = "\r\n".join(["HTTP/1.1 404 Not Found",
                                                 "Content-Type: text/plain",
@@ -130,52 +176,11 @@ def handle_conn(client_conn,addr,directory):
                                                 f"Accept-Encoding: {accept_encoding}",
                                                 "",
                                                 content,
-                                                ]).encode()
+                        ]).encode()
                         client_conn.sendall(response)
 
-                elif req[0] == "POST" and req[1].startswith("/files/"):
-                        
-                            file_path=os.path.join(directory,req[1][7:])
-                            
-                            print(file_path)
-                            file_content = req[-1][-1].encode() 
-
-                            with open(file_path, "wb") as file:
-                                file.write(file_content)
-                                accept_encoding = req[3].get("Accept-Encoding", "")
-                                host = req[3].get("Host", "")
-                                user_agent = req[3].get("User-Agent", "")
-                                response= "\r\n".join([
-                                    "HTTP/1.1 201 Created",
-                                    "Content-Type: text/plain",
-                                    f"Content-Length: {len(file_content)}",
-                                    f"Host: {host}",
-                                    f"User-Agent: {user_agent}",
-                                    f"Accept-Encoding: {accept_encoding}",
-                                    "",  
-                                    file_content.decode()
-                                ]).encode()
-                            
-                                client_conn.sendall(response)
-                            
-                else:
-                    accept_encoding = req[3].get("Accept-Encoding", "")
-                    host = req[3].get("Host", "")
-                    content = "Page Not Found"
-                    user_agent = req[3].get("User-Agent", "")
-                    response = "\r\n".join(["HTTP/1.1 404 Not Found",
-                                            "Content-Type: text/plain",
-                                            f"Content-Length: {len(content)}",
-                                            f"Host: {host}",
-                                            f'User-Agent: {user_agent}',
-                                            f"Accept-Encoding: {accept_encoding}",
-                                            "",
-                                            content,
-                    ]).encode()
-                    client_conn.sendall(response)
-
-                if req[3].get("Connection", "").lower() == "close":
-                    break
+                    if req[3].get("Connection", "").lower() == "close":
+                        break
 
     except Exception as e:
         print(f"Error handling connection: {e}")
